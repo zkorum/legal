@@ -68,6 +68,8 @@ https://github.com/zkorum/product
 
 ### Some screenshots of RariMe
 
+![rarimo](./rarimo.jpg)
+
 ### Accessing Agora
 
 Use either:
