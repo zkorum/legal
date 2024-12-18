@@ -304,7 +304,7 @@ We may add more, but it is a decent beginning.
 - Users can only delete their phone number if they add a passport first
 - Users can only delete their passport data (nullifier, nationality, sex) if they add a phone number first
 - Users can add an optional email address (won't make it for the initial release in Feb but will for sure be later implemented)
-- Users can change or delete the email address they added
+- Users can change or delete the email address they added (won't make it for the initial release in Feb but will for sure be later implemented)
 
 #### Moderation settings (won't make it for the initial release in Feb but will for sure be later implemented)
 
