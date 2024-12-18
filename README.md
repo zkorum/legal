@@ -68,6 +68,14 @@ https://github.com/zkorum/product
 
 ### Some screenshots of RariMe
 
+Clicking on accept would generate the proof and send it to Agora.
+
+Should RariMe add:
+- the URL of agoracitizen.network requesting the proof
+- whether or not the nationality will be shared
+- whether or not the sex will be shared
+- ~~that the nullifier will always be shared?~~ probably not?
+
 ![rarimo](./rarimo.jpg)
 
 ### Accessing Agora
