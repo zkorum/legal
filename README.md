@@ -405,7 +405,7 @@ An "opinion" is shown with:
 
 - Phone number
 - Email address if any
-- Passport proof information (not show in the UI, however the proof is broadcast to Nostr on the backend side)
+- Passport proof information, including nationality and sex (not show in the UI, however the proof is broadcast to Nostr on the backend side)
 - Settings configuration (safe space/brave space, post as anonymous by default)
 - Followed topics
 - "Views" information
