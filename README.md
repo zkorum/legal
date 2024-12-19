@@ -490,11 +490,12 @@ Pol.is cluster:
 - the app will represent these clusters
 - the LLM is used to label each cluster and create AI summary. The result is stored in our database.
 - users can locally navigate the cluster of opinions
-- no data is shared outside our own infra
 
 Topics:
 - the LLM is used to associate topics to each conversations
-- no data is shared outside our own infra
+
+Automatic moderation labeler:
+- an LLM is used to automatically flag/report potentially harmful content 
 
 - We will cross data from multiple conversations to gather more insights. It includes for each user, to infer a profile based on the user account data across multiple conversations. This is done locally in our own infra
 - Most collected data will be involved, including the country calling code, the passport proof, the viewing pattern, and except the IP address, phone number hash/last two digits code/email address, and the private user settings
