@@ -497,6 +497,7 @@ Topics:
 Automatic moderation labeler:
 - an LLM is used to automatically flag/report potentially harmful content 
 
+Dashboard, data analytics, monetization and API
 - We will cross data from multiple conversations to gather more insights. It includes for each user, to infer a profile based on the user account data across multiple conversations. This is done locally in our own infra
 - Most collected data will be involved, including the country calling code, the passport proof, the viewing pattern, and except the IP address, phone number hash/last two digits code/email address, and the private user settings
 - We will provide dashboard analytics that can be filtered depending on sex/nationality (for users that verified their passport) or for country calling code (for those who verified their phone) and more information (cluster info, etc).
