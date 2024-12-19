@@ -44,9 +44,9 @@ Currently, the server contains the following components, in the order the HTTP r
 - AWS Pinpoint and AWS SNS for sending one-time code via SMS/Voice/Messaging app
 - AWS Pinpoint and AWS SES for sending one-time code via email
 - AWS Pinpoint to send notifications
-- We install an LLM locally in AWS infra.
 - All the AWS services are stored on servers based in Paris. A replica of this AWS infrastructure MAY be created and hosted on a US server, for performance reason.
-- Other softwares as a service that we use (hosted in their own cloud): 
+- Other softwares as a service that we use (hosted in their own cloud):
+    - A Hosted LLM (exact service to be defined)     
     - Apple Push Notification service (APNs) for notifications
     - Google Firebase Cloud Messaging (FCM) for notifications
     - Plausible for analytics: https://plausible.io/
@@ -488,12 +488,12 @@ Pol.is cluster:
 - A machine learning algorithm will be used locally in AWS for each conversation
 - This algorithm will create cluster representation, and these results are stored in our database
 - the app will represent these clusters
-- the local LLM is used to label each cluster and create AI summary. The result is stored in our database.
+- the LLM is used to label each cluster and create AI summary. The result is stored in our database.
 - users can locally navigate the cluster of opinions
 - no data is shared outside our own infra
 
 Topics:
-- the local LLM is used to associate topics to each conversations
+- the LLM is used to associate topics to each conversations
 - no data is shared outside our own infra
 
 - We will cross data from multiple conversations to gather more insights. It includes for each user, to infer a profile based on the user account data across multiple conversations. This is done locally in our own infra
