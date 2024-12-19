@@ -497,10 +497,11 @@ Topics:
 Automatic moderation labeler:
 - an LLM is used to automatically flag/report potentially harmful content 
 
-Dashboard, data analytics, monetization and API
-- We will cross data from multiple conversations to gather more insights. It includes for each user, to infer a profile based on the user account data across multiple conversations. This is done locally in our own infra
+Dashboard, data analytics, monetization and API (==> STILL UNDER DISCUSSION
+- We will cross data from multiple conversations to gather more insights. It includes for each user, to infer a profile based on the user account data across multiple conversations. This is done locally in our own infra. Question: will this profiling be available to the user? Probably yes. They are in control of all their info so if they delete each of them, they can change the result of the algorithm. To be further discussed.
 - Most collected data will be involved, including the country calling code, the passport proof, the viewing pattern, and except the IP address, phone number hash/last two digits code/email address, and the private user settings
 - We will provide dashboard analytics that can be filtered depending on sex/nationality (for users that verified their passport) or for country calling code (for those who verified their phone) and more information (cluster info, etc).
+- Every involved individual account's associated "country" and "sex" will be available to the API/dashboard users (maybe only if users pay)? Issue with privacy? Tradeoff between privacy and transparency?
 - We will create provide a chatbot, users can ask whatever they want to know about what is being debated
 - This dashboard and chatbot will be released under a freemium model
 - We will also sell HTTP API for paying clients wanting to do their own market research
