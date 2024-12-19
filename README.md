@@ -33,7 +33,7 @@ In general, Agora is a classic client-server centralized application, with one-c
 Multiple clients (web app, iOS app, Android App), one server.
 
 Currently, the server contains the following components, in the order the HTTP requests see them:
-- Cloudflare proxy - I am not entirely certain, but I am pretty sure it records IP addresses. Role: protect against DDoS attacks.
+- Cloudflare proxy - I am not entirely certain, but I am pretty sure it records IP addresses (and maybe other metadata such as User-Agent and browser fingerprints). Role: protect against DDoS attacks.
 - We MAY use AWS Gateway
 - One simple AWS EC2 instance (logical server). We try not to record IP Addresses here. But I wouldn't write this in the terms of service and privacy policy since I am not sure yet how to make sure this is done properly yet. So I would assume metadata are used and stored here, for now.
 - AWS RDS is used to store the database. 
