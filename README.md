@@ -205,6 +205,7 @@ How it works (this is done on RariMe side):
 - however, it is improbable the issuing government would be able to know which passport used which app: the more people have registered to this smart-contract, the less likely the government would be able to be successful at a dictionary attack
 
 More info (copied from Rarimo internal message to us):
+
 --- 
 Here is an update from our side regarding the light vs. full verification modes:
 1. We've decided to handle the difference between full vs. light verification modes on the passport registration step. RariMe App will handle it seamlessly for the user.
