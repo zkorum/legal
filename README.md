@@ -255,9 +255,9 @@ Note that the app is freely visible on the web. All content (except certain pers
 - Followed topics is a private information (kept only between the user and our server)
 - Users can unfollow topics
 
-#### "View" actions (won't make it for the initial release in Feb but will for sure be later implemented)
+#### "Views" actions (won't make it for the initial release in Feb but will for sure be implemented)
 
-- This is used for the future "For You" algorithm. 
+This is used for the future "For You" algorithm. The goal of this algorithm is to engage the users into seeing conversation on topics they are interested in, push conversations and topics that need more diverse opinions and reactions, and open the perspectives of the users to new topics.
 - What the user viewed and at what time: 
     - conversations that appeared on their feed
     - conversations that they clicked on from their feed
@@ -265,9 +265,9 @@ Note that the app is freely visible on the web. All content (except certain pers
     - opinions that they viewed on the conversations they opened
     - opinions that they clicked on to see the replies 
     - replies that they viewed on the opinions they opened
-- Unlike mainstream social apps, users can view and delete each of these information at any time in the settings.
+- Unlike mainstream social apps, users can opt out from the collection of this data. They can view and delete this information at any time. Doing so will affect the availability or pertinence of the For You algorithm.
 
-We may add more, but it is a decent beginning.
+We may add more of this type of data, but it is a decent beginning.
 
 #### Languages
 
