@@ -321,13 +321,12 @@ We may add more of this type of data, but it is a decent beginning.
 - Users can choose this global setting in the menu
 - Users can switch Safe Space/Brave Space per conversation
 
-#### "Post as anonymous by default" settings (won't make it for the initial release in Feb but MAY be later implemented)
+#### "Post as anonymous" (won't make it for the initial release in Feb but MAY be later implemented)
 
-- Users can choose to appear as "anonymous" or not by default (during onboarding, or in their profile page)
-- Posting as anonymous can also be manually chosen when creating conversations/opinions/replies
-- Upon posting as anonymous, the username is hidden and replaced by "anonymous", and the corresponding content does not appear publicly in the user profile
-- In our database, we still link the user content with the user profile, we just don't show it in the frontend
-- People can still use the broadcast proofs to associate a given "anonymous" post to a particular account
+- Users can choose to appear as "anonymous" or not when creating conversations/opinions/replies
+- Upon posting as anonymous, the username is hidden and replaced by "anonymous", and the corresponding content does not appear publicly in the user profile. The profile picture is also replaced with the static "anonymous" one.
+- In our database, we still link the user content with the user profile, we just don't show it in the frontend.
+- To preserve privacy, the proof of posting as anonymous are NOT broadcast to Nostr/p2p network.
 - Users cannot use emoji/claps/agree/disagree/upvote/downvote as "anonymous".
 
 #### Notifications
@@ -352,13 +351,37 @@ We may add more of this type of data, but it is a decent beginning.
 
 #### Proofs
 
-- all the signed data are always kept and broadcast via Nostr Relay
+- all the signed data are always kept locally.
+- most signed data are broadcast via Nostr Relay (see lists below)
 - these proofs are not visible in the app - but anyone can download all the proofs for a given conversation, by clicking on a button
 - signed data are:
     - every UCAN to every HTTP request, it contains the HTTP Method and HTTP Endpoint being called, the DID of the audience, the did of the issuer (the public key of the originating device that signs the UCAN), the time, the expiration date, and the hash of the HTTP body. All this data is signed with the key of the device currently logged-in.
     - the ZKP received from RariMe
 
 Note that, UCAN uses a hash (one-way function) to hide the HTTP body - so it's just a proof, not the actual data. However, certain data are trivial to brute force. For example, if the body is either "agree" or "disagree", then the sha256 hash will always be either "94d5c9d96025716090f176f76e07c45b1296250fe9bfe1823f77f53881548690" for "agree" or "67656def000fb9af9c1bd2459f92a20d3a778a56fc20660c81c2f8f424f91d8f" for disagree, so in that case it is trivial to deanonymize.
+
+The broadcast signed data are the proof of the data that are used to generated the analytics, and populate the website public content. The following requests _proofs_ (not data at this point) are broadcast:
+- authentication data:
+    - bi-directional proofs with ZKP from RariMe
+    - UCAN proving account creation / adding new device to a specific user. Require trusting Agora. In this specific case, no body hash will be involved in the proof, to protect user's phone number.
+- create/edit/delete a conversation/opinion/reply EXCEPT for those posted as "anonymous"
+- react to an opinion/reply (emojis)
+- cancel reaction to an opinion/reply
+- flag an opinion/reply (including reply "this is misleading / this is antisocial")
+- unflag an opinion/reply (reply "this is not misleading / this is not antisocial")
+- agree/disagree on an opinion
+- cancel agree/disagree on an opinion
+- clap/unclap a conversation
+- upvote/downvote a reply
+- cancel upvote/downvote a reply
+- delete account
+
+UCAN that are never broadcast:
+- "Views" requests
+- Safe space/Brave space settings
+- create/edit/delete a conversation/opinion/reply posted as "anonymous"
+- notifications / notification settings
+- follow/unfollow topics
 
 ### Data visibility
 
@@ -415,10 +438,11 @@ An "opinion" is shown with:
 - Phone number
 - Email address if any
 - Passport proof information, including nationality and sex (not show in the UI, however the proof is broadcast to Nostr on the backend side)
-- Settings configuration (safe space/brave space, post as anonymous by default)
+- Settings configuration (safe space/brave space setting)
 - Followed topics
 - "Views" information
 - Languages information
+- Conversations/Opinions/Replies posted as "anonymous"
 
 ### Control and user actions
 
@@ -499,9 +523,10 @@ Automatic moderation labeler:
 
 Dashboard, data analytics, monetization and API (==> UNDER DISCUSSION)
 - We would use data analytics to infer data from multiple conversations to gather more insights. It includes for each user, to infer a "Political" profile based on the user account data across multiple conversations. Question: will this "Political" profile be available to the each user? Yes. Will be part of the upcoming reputation/gamification system. Users are in control of all their info so if they delete each of them, they can change the result of the algorithm.
-- Most collected data will be involved, including the country calling code, the passport proof, the conversations/opinions/replies created, the Reactions, the upvotes/downvotes, the Claps, the agrees/disagrees. The data that will NOT be involved will be the IP address and other metadata, the "Views" data, the phone number hash, the phone number last two digits, the email address, the Safe Space/Brave Space setting and Post as anonymous by default setting, the Notifications settings, the language settings and the Topics followed.
+- Most collected data will be involved, including the country calling code, the passport proof, the conversations/opinions/replies created (including "anonymous" ones), the Reactions, the upvotes/downvotes, the Claps, the agrees/disagrees. The data that will NOT be involved will be the IP address and other metadata, the "Views" data, the phone number hash, the phone number last two digits, the email address, the Safe Space/Brave Space setting, the Notifications settings, the language settings and the Topics followed.
 - We would provide dashboard analytics that can be filtered depending on the demographics \[sex/nationality (for users that verified their passport) or country inferred from the country calling code (for those who verified their phone)] and more information (cluster info, etc).
-- Every involved individual account's demographics ("country" and "sex", and later eventually "age group") used to calculate this dashboard will be available to the API/dashboard. That means any users can know the demographics of each account, given access to this API/dashboard. Issue with privacy? Tradeoff between privacy and transparency? Clients must trust us that our dashboard/analytics are correctly generated if we don't provide the demographics data on the first place. Plus, that wouldn't work with a more decentralized data approach.
+- Every involved individual account's posts and demographics ("country" and "sex", and later eventually "age group") used to calculate this dashboard will be available to the API/dashboard. That means any users can know the demographics of each account, given access to this API/dashboard. Issue with privacy? Tradeoff between privacy and transparency? Clients must trust us that our dashboard/analytics are correctly generated if we don't provide the demographics data on the first place. Plus, that wouldn't work with a more decentralized data approach.
+- There is an exception with the above: "anononymous" conversation/opinion/reply will be used and available in the dashboard/API, and the underlying user demographics as well, however the information of which account the data belongs to will not be made available.
 - We would provide a chatbot, users can ask whatever they want to know about what is being debated
 - This dashboard and chatbot will be released under a freemium model
 - We would also sell HTTP API for paying clients wanting to do their own market research
