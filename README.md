@@ -365,6 +365,7 @@ The broadcast signed data are the proof of the data that are used to generated t
     - bi-directional proofs with ZKP from RariMe
     - UCAN proving account creation / adding new device to a specific user. Require trusting Agora. In this specific case, no body hash will be involved in the proof, to protect user's phone number.
 - create/edit/delete a conversation/opinion/reply including the one posted as "anonymous"
+- choosing or associating a username to a did:key (public key and underlying account UUID/nullifier) - this is not done for did:key used for "anonymous" posting
 - react to an opinion/reply (emojis)
 - cancel reaction to an opinion/reply
 - flag an opinion/reply (including reply "this is misleading / this is antisocial")
