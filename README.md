@@ -74,7 +74,7 @@ Should RariMe add:
 - the URL of agoracitizen.network requesting the proof
 - whether or not the nationality will be shared
 - whether or not the sex will be shared
-- ~~that the nullifier will always be shared?~~ probably not?
+- ~~that the nullifier will always be shared?~~ probably not, since it is what "uniqueness" partially means?
 
 ![rarimo](./rarimo.jpg)
 
