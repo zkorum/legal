@@ -511,8 +511,8 @@ The action to edit conversation/opinion/reply:
 Pol.is cluster:
 - A machine learning algorithm will be used locally in AWS for each conversation
 - This algorithm will create cluster representation, and these results are stored in our database
+- the LLM is used to label each cluster and create AI summary. The result is stored in our database
 - the app will display and visually represent these clusters
-- the LLM is used to label each cluster and create AI summary. The result is stored in our database.
 - users can locally navigate the cluster of opinions
 
 Topics:
