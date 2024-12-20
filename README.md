@@ -139,6 +139,12 @@ In case of database leak however, if both the pepper and the phone number hashes
 
 A similar approach is usually recommended to protect passwords (passwords are saved in hash forms using user-specific one-time salt instead of global pepper, but since we don't have a username/email to connect the authentication request to, we can't use the salt approach unfortunately).
 
+##### Supported country phone number
+
+- any EU country and associated countries (the UK, Georgia, Ukraine, Switzerland...etc)
+- the US
+- Canada
+
 ##### Other potential ways to send the one-time code
 
 We may use:
@@ -182,13 +188,15 @@ Recorded information on Agora backend:
 
 ##### Authorized countries
 
-We only accept proof from passport coming from the following countries:
+Ideally we would allow passports from _any country_, if it's possible to launch like this without any terms of service/privacy policy for each specifi country.
+
+If it's not possible we will only accept proof from passport coming from the following countries:
 - any EU country and associated countries (the UK, Georgia, Ukraine, Switzerland...etc)
 - the US
 - Canada
 - Venezuela
 
-Any proofs that do not verify this condition are refused.
+Any proofs that would not verify this condition would be refused.
 
 ##### Age verification 
 
