@@ -321,7 +321,7 @@ We may add more of this type of data, but it is a decent beginning.
 - Users can choose this global setting in the menu
 - Users can switch Safe Space/Brave Space per conversation
 
-#### "Post as anonymous" (won't make it for the initial release in Feb but MAY be later implemented)
+#### "Post as anonymous" (won't make it for the initial release in Feb but will for sure be later implemented)
 
 - Users can choose to appear as "anonymous" or not when creating conversations/opinions/replies
 - Upon posting as anonymous, the username is hidden and replaced by "anonymous", and the corresponding content does not appear publicly in the user profile. The profile picture is also replaced with the static "anonymous" one.
