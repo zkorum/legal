@@ -15,6 +15,8 @@ For the February launch, we want to primarily launch to the US, Europe and its a
 
 In terms of marketing we'll primarily target France, the US, Venezuela and Barcelona, through our network of partners.
 
+Ideally, if possible, we'd support passports from any given origin country. It's technically trivial. We'd however not want to support every phone number country code. Just the ones mentioned above.
+
 ## Some important questions
 
 - what constitutes "launching" to another country? Is it supporting users who own a phone number or a passport in the specific region? By using passport citizenship OR the country calling code? Or is it based on IP address origin only? The latter would be better for us from a business perspective. We want to be able to support Venezuela passport, but we don't want to support Venezuela phone numbers (we don't want to bear the risk of hosting identifying controversial data). For the US, Canada, and Europe, we want to support both phone numbers and passports.
