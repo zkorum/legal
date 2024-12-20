@@ -326,7 +326,7 @@ We may add more of this type of data, but it is a decent beginning.
 - Users can choose to appear as "anonymous" or not when creating conversations/opinions/replies
 - Upon posting as anonymous, the username is hidden and replaced by "anonymous", and the corresponding content does not appear publicly in the user profile. The profile picture is also replaced with the static "anonymous" one.
 - In our database, we still link the user content with the user profile, we just don't show it in the frontend.
-- To preserve privacy, the proof of posting as anonymous are NOT broadcast to Nostr/p2p network. A method to maintain auditability could involve broadcasting proofs, excluding the proof that links the accounts. However, this would require changes to Rarimo and additional development in Agora.
+- To protect privacy, the proof of posting anonymously is also broadcast to the Nostr/P2P network. However, the proof that links the accounts together is not broadcast, ensuring privacy is maintained.
 - Users cannot use emoji/claps/agree/disagree/upvote/downvote as "anonymous".
 
 #### Notifications
@@ -364,7 +364,7 @@ The broadcast signed data are the proof of the data that are used to generated t
 - authentication data:
     - bi-directional proofs with ZKP from RariMe
     - UCAN proving account creation / adding new device to a specific user. Require trusting Agora. In this specific case, no body hash will be involved in the proof, to protect user's phone number.
-- create/edit/delete a conversation/opinion/reply EXCEPT for those posted as "anonymous"
+- create/edit/delete a conversation/opinion/reply including the one posted as "anonymous"
 - react to an opinion/reply (emojis)
 - cancel reaction to an opinion/reply
 - flag an opinion/reply (including reply "this is misleading / this is antisocial")
@@ -379,7 +379,7 @@ The broadcast signed data are the proof of the data that are used to generated t
 UCAN that are never broadcast:
 - "Views" requests
 - Safe space/Brave space settings
-- create/edit/delete a conversation/opinion/reply posted as "anonymous"
+- the proofs that link the identifiers used for anonymous posting with the identifier used for pseudonymous posting
 - notifications / notification settings
 - follow/unfollow topics
 
