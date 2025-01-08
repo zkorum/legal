@@ -87,7 +87,7 @@ Use either:
 - https://agoracitizen.network/feed/ on the web
 - the Agora iOS app
 - the Agora Android app (we will launch to Google Play Store but we may launch as well to F-Droid at some point)
-- (in the future) send valid data directly / manually via the peer-to-peer Waku protocol.
+- (in the future) by sending valid data directly / manually via the peer-to-peer Waku protocol (this is the most censorship-resistant approach).
 
 ### Authentication flow
 
