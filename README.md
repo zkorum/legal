@@ -19,7 +19,7 @@ Ideally, if possible, we'd support passports from any given origin country. It's
 
 ## Some important questions
 
-- what constitutes "launching" to another country? Is it supporting users who own a phone number or a passport in the specific region? By using passport citizenship OR the country calling code? Or is it based on IP address origin only? The latter would be better for us from a business perspective. We want to be able to support Venezuela passport, but we don't want to support Venezuela phone numbers (we don't want to bear the risk of hosting identifying controversial data). For the US, Canada, and Europe, we want to support both phone numbers and passports.
+- what constitutes "launching" to another country? Is it supporting users who own a phone number or a passport in the specific region? By using passport citizenship OR the country calling code? Or is it based on IP address origin only? The latter would be better for us from a business perspective. We want to be able to support Venezuela passport, but we don't want to support Venezuela phone numbers (we don't want to bear the risk of hosting identifying controversial data). For the US, Canada, Australia, New Zealand, and Europe, we want to support both phone numbers and passports.
 - to make sure we are compliant in _not_ supporting a specific region, are we expected to ban / not serve our website if the user is using an IP address from that region? That seems unecessary? Our social app is freely accessible in read-only on the web, but tosince we won't support phone/passport for that region, it would be impossible for them to register/log-in anyway. I suppose we need to mention the target countries in the iOS and Android stores?
 - how do we know the age of the users? we can verify that with passports, but not with phone numbers. Should we use some kind of consent mechanism? For the mobile apps, it's easy, it can be built-in the mobile app stores. But for the web, it's different.
 - we should make it clear who is responsible for any eventual privacy breach if there is a flaws in the zero-knowledge proof math. The point of ZK cryptography and what we try to achieve with Agora is to design the app so that we don't collect personal data on the first place, unless it's strictly necessary for the service to function - and we work hard to provide this. But in case users can unfortunately be de-anonymized, for example because they don't use Tor and reveal their IP, or because they revealed their identity through sharing too many personal information in their writing, or through their style of writing, correlated with the attributes they shared from their passport and their other recorded actions. If law enforcement asks us, we will comply (no choice anyway), and if they can de-anonimize, they will and we should not be liable to the users. I think we should make it clear that we are not liable for these advanced privacy mechanisms in general: "use at your own risk".
@@ -196,10 +196,12 @@ Recorded information on Agora backend:
 
 Ideally we would allow passports from _any country_, if it's possible to launch like this without any terms of service/privacy policy for each specific country.
 
-If it's not possible we will only accept proof from passport coming from the following countries:
+If it's not possible we will temporarily only accept proof from passport coming from the following countries:
 - any EU country and associated countries (the UK, Georgia, Ukraine, Switzerland...etc)
 - the US
 - Canada
+- New Zealand
+- Australia
 - Venezuela
 
 Any proofs that would not verify this condition would be refused.
