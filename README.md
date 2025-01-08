@@ -148,6 +148,8 @@ A similar approach is usually recommended to protect passwords (passwords are sa
 - any EU country and associated countries (the UK, Georgia, Ukraine, Switzerland...etc)
 - the US
 - Canada
+- Australia
+- New Zealand
 
 ##### Other potential ways to send the one-time code
 
