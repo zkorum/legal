@@ -30,7 +30,7 @@ Ideally, if possible, we'd support passports from any given origin country. It's
 
 ### Current architecture diagram
 
-In general, Agora is a classic client-server centralized application, with one-catch: we broadcast cryptographic proofs using the Nostr Protocol (and maybe later a p2p protocol called Waku).
+In general, Agora is a classic client-server centralized application, with one-catch: we broadcast cryptographic proofs using the Nostr Protocol (and later to a p2p protocol called Waku).
 
 Multiple clients (web app, iOS app, Android App), one server.
 
@@ -61,7 +61,7 @@ In general:
 - we try not to store/log IP addresses, but I wouldn't write this in the privacy policy / terms of service since Cloudflare use them to protect from DDoS anyway
 - we also store all the cryptographic proofs in this database as well. Every HTTP requests are signed by the user device and cryptographically bound to the data using hashing (a specific public key has signed that they wanted to send a specific HTTP request with the body linked as a hash).
 - in addition to storing the proofs to the PostgreSQL database, **we broadcast most of the cryptographic proofs to the Nostr protocol** (see details below). For that, we broadcast the proof from our backend to one to many Nostr Relay that's configurable on the client side. By default, we use the external nostr.lol (not sure for the exact relay, to be defined). One day we might run our own relay.
-- in future, on top of supporting Nostr, we will probably broadcast the proof/data (configurable by users) to a peer-to-peer network (Waku https://waku.org/) from the server in our own infrastructure. Only valid data would be broadcast.
+- in the future, on top of supporting Nostr, we will probably broadcast the proof/data (configurable by users) to a peer-to-peer network (Waku https://waku.org/) from the server in our own infrastructure. Only valid data would be broadcast.
 - we will also listen to data (proof+payload) broadcast to Waku, as an alternative way to post to Agora (instead of sending an HTTP request).
 
 ### Link to the Figma prototype (feel free to play with it)
