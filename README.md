@@ -11,7 +11,7 @@ Note that RariMe iOS app is only available to 17+ years old users. So I suppose,
 
 ### Where do we launch?
 
-For the February launch, we want to primarily launch to the US, Europe and its associated countries (the UK, Georgia, Ukraine...etc), and if possible to Canada. We also want to partially support Venezuela (just the passport, not phone number, see question below).
+For the February launch, we want to primarily launch to the US, Europe and its associated countries (the UK, Georgia, Ukraine...etc), and if possible to Canada, Australia and New Zealand. We also want to partially support Venezuela (just the passport, not phone number, see question below).
 
 In terms of marketing we'll primarily target France, the US, Venezuela and Barcelona, through our network of partners.
 
