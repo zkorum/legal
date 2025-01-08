@@ -46,6 +46,7 @@ Currently, the server contains the following components, in the order the HTTP r
 - AWS Pinpoint and AWS SNS for sending one-time code via SMS/Voice/Messaging app
 - AWS Pinpoint and AWS SES for sending one-time code via email
 - AWS Pinpoint to send notifications
+- AWS KMS for managing cryptographic secrets
 - All the AWS services are stored on servers based in Paris. A replica of this AWS infrastructure MAY be created and hosted on a US server, for performance reason.
 - Other softwares as a service that we use (hosted in their own cloud):
     - A Hosted LLM (exact service to be defined)     
