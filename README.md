@@ -22,7 +22,7 @@ Ideally, if possible, we'd support passports from any given origin country. It's
 - what constitutes "launching" to another country? Is it supporting users who own a phone number or a passport in the specific region? By using passport citizenship OR the country calling code? Or is it based on IP address origin only? The latter would be better for us from a business perspective. We want to be able to support Venezuela passport, but we don't want to support Venezuela phone numbers (we don't want to bear the risk of hosting identifying controversial data). For the US, Canada, and Europe, we want to support both phone numbers and passports.
 - to make sure we are compliant in _not_ supporting a specific region, are we expected to ban / not serve our website if the user is using an IP address from that region? That seems unecessary? Our social app is freely accessible in read-only on the web, but tosince we won't support phone/passport for that region, it would be impossible for them to register/log-in anyway. I suppose we need to mention the target countries in the iOS and Android stores?
 - how do we know the age of the users? we can verify that with passports, but not with phone numbers. Should we use some kind of consent mechanism? For the mobile apps, it's easy, it can be built-in the mobile app stores. But for the web, it's different.
-- we should make it clear who is responsible for any eventual privacy breach if there is a flaws in the zero-knowledge proof math. Or in case users can be de-anonymized, for example because they don't use Tor and reveal their IP, or because they revealed their identity through sharing too many personal information in their writing, or through their style of writing, correlated with the attributes they shared from their passport and their other recorded actions. If law enforcement asks us, we will comply, and if they can de-anonimize, they will and we should not be liable to the users. I think we should make it clear that we are not liable for these advanced privacy mechanisms in general: "use at your own risk".
+- we should make it clear who is responsible for any eventual privacy breach if there is a flaws in the zero-knowledge proof math. The point of ZK cryptography and what we try to achieve with Agora is to design the app so that we don't collect personal data on the first place, unless it's strictly necessary for the service to function - and we work hard to provide this. But in case users can unfortunately be de-anonymized, for example because they don't use Tor and reveal their IP, or because they revealed their identity through sharing too many personal information in their writing, or through their style of writing, correlated with the attributes they shared from their passport and their other recorded actions. If law enforcement asks us, we will comply (no choice anyway), and if they can de-anonimize, they will and we should not be liable to the users. I think we should make it clear that we are not liable for these advanced privacy mechanisms in general: "use at your own risk".
 - how can we warn the users of a Terms of Service or Privacy Policy change, since we don't collect email address systematically (only phone numbers OR ZKP from passport)? Is warning them mandatory by law? Can we just prompt them with a Dialog with a box "I agree" on the next login when/if they return to the app? For example, when we decide to broadcast all the data, not just proofs, we should probably NOT broadcast existing users data until these existing users have manually accepted the new Terms of Service?
 - for the data that we don't collect yet, but we know we will do so, should we still put it in the Terms of Service and Privacy Policy, so we're forward thinking, and we don't have to change the documents for a while? Not collecting something that's mentioned seems OK to be, but not the opposite.
 
@@ -37,7 +37,7 @@ Multiple clients (web app, iOS app, Android App), one server.
 Currently, the server contains the following components, in the order the HTTP requests see them:
 - Cloudflare proxy - I am not entirely certain, but I am pretty sure it records IP addresses (and maybe other metadata such as User-Agent and browser fingerprints). Role: protect against DDoS attacks.
 - We MAY use AWS Gateway
-- One simple AWS EC2 instance (logical server). We try not to record IP Addresses here. But I wouldn't write this in the terms of service and privacy policy since I am not sure yet how to make sure this is done properly yet. So I would assume metadata are used and stored here, for now.
+- One simple AWS EC2 instance (logical server).
 - AWS RDS is used to store the database. 
 - AWS S3 is used for static assets and backups.
 - AWS CloudWatch for log monitoring of the AWS EC2 Instance and the other AWS services. 
@@ -58,11 +58,11 @@ Currently, the server contains the following components, in the order the HTTP r
 
 In general:
 - we store data centralized in a PostgreSQL database like usual (AWS RDS)
-- we try not to store/log IP addresses, but I wouldn't write this in the privacy policy / terms of service since Cloudflare use them anyway
+- we try not to store/log IP addresses, but I wouldn't write this in the privacy policy / terms of service since Cloudflare use them to protect from DDoS anyway
 - we also store all the cryptographic proofs in this database as well. Every HTTP requests are signed by the user device and cryptographically bound to the data using hashing (a specific public key has signed that they wanted to send a specific HTTP request with the body linked as a hash).
-- in addition to storing the proofs to the PostgreSQL database, **we broadcast most of the cryptographic proofs to the Nostr protocol**. For that, we broadcast the proof from our backend to one to many Nostr Relay that's configurable on the client side. By default, we use the external nostr.damus.io (not sure for the exact relay, to be defined). One day we might run our own relay.
-- in the future we _may_ (not for the first release) broadcast the _data itself (payload)_ together with the proofs to the Nostr Relay. If we do so we'll use our own Nostr Relay as the default relay (that cannot be opted out - but people can add additional relays), and our homegrown Relay would not accept any random incoming data like other Nostr Relay do, we would only accept incoming data that originates from a passport (Rarimo protocol - cryptographic bi-directional verifiability) or which originates from our own server (private off-protocol phone number verification - trusted). Our Relay would be hosted on an AWS EC2 instance in a Paris server. See https://x.com/nicobaogim/status/1868736986548519102 for details
-- in the near future, instead of using Nostr, we will probably broadcast the proof/data to a peer-to-peer network (Waku https://waku.org/), from a server that's configurable client-side. The default server to broadcast data would be hosted in our infrastructure. Only valid data would be broadcast.
+- in addition to storing the proofs to the PostgreSQL database, **we broadcast most of the cryptographic proofs to the Nostr protocol** (see details below). For that, we broadcast the proof from our backend to one to many Nostr Relay that's configurable on the client side. By default, we use the external nostr.lol (not sure for the exact relay, to be defined). One day we might run our own relay.
+- in future, on top of supporting Nostr, we will probably broadcast the proof/data (configurable by users) to a peer-to-peer network (Waku https://waku.org/) from the server in our own infrastructure. Only valid data would be broadcast.
+- we will also listen to data (proof+payload) broadcast to Waku, as an alternative way to post to Agora (instead of sending an HTTP request).
 
 ### Link to the Figma prototype (feel free to play with it)
 
@@ -72,7 +72,7 @@ https://github.com/zkorum/product
 
 Clicking on accept would generate the proof and send it to Agora.
 
-Should RariMe add:
+Should RariMe add the following?:
 - the URL of agoracitizen.network requesting the proof
 - whether or not the nationality will be shared
 - whether or not the sex will be shared
@@ -86,6 +86,7 @@ Use either:
 - https://agoracitizen.network/feed/ on the web
 - the Agora iOS app
 - the Agora Android app (we will launch to Google Play Store but we may launch as well to F-Droid at some point)
+- (in the future) send valid data directly / manually via the peer-to-peer Waku protocol.
 
 ### Authentication flow
 
@@ -190,7 +191,7 @@ Recorded information on Agora backend:
 
 ##### Authorized countries
 
-Ideally we would allow passports from _any country_, if it's possible to launch like this without any terms of service/privacy policy for each specifi country.
+Ideally we would allow passports from _any country_, if it's possible to launch like this without any terms of service/privacy policy for each specific country.
 
 If it's not possible we will only accept proof from passport coming from the following countries:
 - any EU country and associated countries (the UK, Georgia, Ukraine, Switzerland...etc)
@@ -235,10 +236,10 @@ How it impacts our own privacy policy or terms of service:
 
 ### Log out
 
-Logging out has the following impact:
+Logging out has the following impact (current implementation - may change in the future):
 - the keypair is deleted from the app locally (web/ios/android)
-- the backend keeps the deleted device public key in the database, for auditability reason
-- the backend will refuse to log back with the same keypair again and will refuse any request from this public key
+- the backend keeps the locally deleted device public key in the database
+- if kept, the keypair can log back in again
 
 ### User data generated and recorded on the app
 
@@ -275,7 +276,7 @@ This is used for the future "For You" algorithm. The goal of this algorithm is t
     - opinions that they viewed on the conversations they opened
     - opinions that they clicked on to see the replies 
     - replies that they viewed on the opinions they opened
-- Unlike mainstream social apps, users can opt out from the collection of this data. They can view and delete this information at any time. Doing so will affect the availability or pertinence of the For You algorithm.
+- Unlike mainstream social apps, users can opt out from the collection of this data. They can view and delete this information at any time. Doing so will affect the availability or pertinence of the "Discover" algorithm.
 
 We may add more of this type of data, but it is a decent beginning.
 
@@ -306,17 +307,17 @@ We may add more of this type of data, but it is a decent beginning.
 
 - Users can agree or disagree on opinions.
 
-#### Replies (won't make it for the initial release in Feb but will for sure be later implemented)
+#### Replies
 
 - Users can "reply" to an opinion (free text).
 - Opinion authors can reply to the replies they receive.
 - Random users cannot reply to someone else's reply.
 
-#### Upvote/Downvote (won't make it for the initial release in Feb but will for sure be later implemented)
+#### Upvote/Downvote
 
 - Any logged-in user can upvote or downvote a reply.
 
-#### Identity data in settings
+#### Identity data in settings (won't make it for the initial release in Feb but will for sure be later implemented - for not users can just delete their account)
 
 - Users can add a phone number at any time.
 - Users can change their passport to another one at any time.
@@ -345,10 +346,10 @@ We may add more of this type of data, but it is a decent beginning.
 - Current notifications are: 
     - someone created an opinion to your conversation 
     - someone agreed/disagreed to your opinion
-    - your moderation report was received (will not make it for first release)
+    - someone replied to your opinion
+    - someone upvoted your reply
+    - your moderation report was received / processed (will not make it for first release)
     - someone clapped your conversation (will not make it for first release)
-    - someone replied to your opinion (will not make it for first release)
-    - someone upvoted your reply (will not make it for first release)
 - Notifications cannot be deleted, but the user can opt out from them (either mobile push notification, web push notification or in-app notification).
 
 #### Reports
@@ -368,18 +369,20 @@ We may add more of this type of data, but it is a decent beginning.
     - every UCAN to every HTTP request, it contains the HTTP Method and HTTP Endpoint being called, the DID of the audience, the did of the issuer (the public key of the originating device that signs the UCAN), the time, the expiration date, and the hash of the HTTP body. All this data is signed with the key of the device currently logged-in.
     - the ZKP received from RariMe
 
-Note that, UCAN uses a hash (one-way function) to hide the HTTP body - so it's just a proof, not the actual data. However, certain data are trivial to brute force. For example, if the body is either "agree" or "disagree", then the sha256 hash will always be either "94d5c9d96025716090f176f76e07c45b1296250fe9bfe1823f77f53881548690" for "agree" or "67656def000fb9af9c1bd2459f92a20d3a778a56fc20660c81c2f8f424f91d8f" for disagree, so in that case it is trivial to deanonymize.
+Note that, UCAN uses a hash (one-way function) to hide the HTTP body - so it's just a proof, not the actual data. However, certain data are trivial to brute-force. For example, if the body is either "agree" or "disagree", then the sha256 hash will always be either "94d5c9d96025716090f176f76e07c45b1296250fe9bfe1823f77f53881548690" for "agree" or "67656def000fb9af9c1bd2459f92a20d3a778a56fc20660c81c2f8f424f91d8f" for disagree, so in that case it is trivial to deanonymize.
 
-The broadcast signed data are the proof of the data that are used to generated the analytics, and populate the website public content. The following requests _proofs_ (not data at this point) are broadcast:
+The broadcast signed data (= associated with a specific did:key) are the proof of the data that are used to generate the dashboard analytics, and populate the website public content. The following requests _proofs_ (not data at this point) are broadcast:
 - authentication data:
     - bi-directional proofs with ZKP from RariMe
-    - UCAN proving account creation / adding new device to a specific user. Require trusting Agora. In this specific case, no body hash will be involved in the proof, to protect user's phone number.
+    - UCAN proving account creation / adding new device to a specific user. May require trusting Agora if not bound to a ZKP proof but a phone number. In this specific case, no body hash will be involved in the proof, to protect user's phone number.
+- associating a UUID to a did:key (public key) - this is NOT broadcast for did:key used for "anonymous" posting 
+- updating and associating a username to a did:key (public key and underlying account UUID/nullifier) - this is NOT broadcast for did:key used for "anonymous" posting
 - create/edit/delete a conversation/opinion/reply including the one posted as "anonymous"
-- choosing or associating a username to a did:key (public key and underlying account UUID/nullifier) - this is not done for did:key used for "anonymous" posting
 - react to an opinion/reply (emojis)
 - cancel reaction to an opinion/reply
-- flag an opinion/reply (including reply "this is misleading / this is antisocial")
-- unflag an opinion/reply (reply "this is not misleading / this is not antisocial")
+- report a conversation/opinion/reply
+- flag a conversation/opinion/reply (including reply "this is misleading / this is antisocial")
+- unflag an conversation/opinion/reply (reply "this is not misleading / this is not antisocial")
 - agree/disagree on an opinion
 - cancel agree/disagree on an opinion
 - clap/unclap a conversation
@@ -403,8 +406,10 @@ Conversations/opinions/replies are shown with the date of creation / edit, and w
 These data are visible directly by anyone without any log-in from our website:
 - users profile:
     - username
+    - UUID
     - user profile picture
-    - user nullifier (extracted from ZKP) - if they have verified their passport
+    - user nullifier (extracted from ZKP) & bidirectional identity proofs - if they have verified their passport
+    - proof signed by Agora server bounding the did:keys to the user UUID - if they only verified the phone number
     - date the user joined the app
     - conversation/opinion/reply that are assigned to the username (not the ones created with "post as anonymous" option, those are only visible to the logged-in user that controls the given profile)
     - reactions (emojis)
@@ -413,12 +418,14 @@ These data are visible directly by anyone without any log-in from our website:
     - upvotes/downvotes
     - the polls the user responded to
     - flagged/reported content by the user
+    - all content include proofs
 - feed:
-    - conversations
+    - conversations including proofs
 - conversation page 
     - all the opinions as they appear 
     - all the replies as they appear 
     - all the reactions/agree/disagree/upvote/downvote/claps
+    - all content include proofs
 
 A "conversation" is shown with:
 - date the conversation was created/last edited
@@ -448,12 +455,13 @@ An "opinion" is shown with:
 
 - Phone number
 - Email address if any
-- Passport proof information, including nationality and sex (not show in the UI, however the proof is broadcast to Nostr on the backend side)
+- If phone verified, explicit phone country code and associated country (not displayed to the public in the UI, however the proof containing the information is downloadable client-side by anyone, and the proof is broadcast to Nostr/p2p on the backend side)
+- If passport verified, explicit nationality and sex (not displayed to the public in the UI, however the ZK proof containing the information is downloadable client-side by anyone, and the proof is broadcast to Nostr/p2p on the backend side)
 - Settings configuration (safe space/brave space setting)
 - Followed topics
 - "Views" information
 - Languages information
-- Conversations/Opinions/Replies posted as "anonymous"
+- Conversations/Opinions/Replies posted as "anonymous" (they appear publicly including proof, but the *association* with a specific user is only shown to the said specific user)
 
 ### Control and user actions
 
@@ -463,7 +471,7 @@ An "opinion" is shown with:
     - their upvote/downvote
     - their poll responses
     - their agree/disagree actions
-    - following a topic (unfollow, at least 3 topics must be selected)
+    - following a topic (unfollow, at least 3 topics must be selected al all times)
 
 - Users can delete:
     - their conversations
@@ -486,21 +494,24 @@ To delete the passport proof (if a phone number has already been entered):
 
 To delete the account:
 - logged-in user who have verified their passport with RariMe must regenerate a proof, containing only the nullifier (no nationality or sex)
-- otherwise, a normal confirmation is sufficient
+- logged-in user who have verified only their phone number must re-verify their phone number to confirm deletion their account
 
-Upon deletion of the account:
-- the account is marked to be deleted
-- this action will trigger the future deletion all the user data, with the following exception (these data will never be deleted):
-    - the IDs for the user-generated opinion/conversation/replies will be kept so that it will not be re-used and it will show an appropriate message when clicking on the dead link. It is also useful to allow users to search by ID and audit our platform.
-    - the UCAN (signed data with device public key) corresponding to the HTTP request demanding to delete the a given account
-    - if users had verified their passport, the ZKP from RariMe that is bound to the device key. In this case the ZKP only contains the nullifier and the device key, not the sex/nationality.
+Upon the user confirming the deletion of their account:
+- the account is marked to be deleted in 15 days
+- the user is shown the text: "Your account is set to be permanently deleted in 15 days. Log back in at any time before this period to restore your account and cancel the deletion action."
+- this action will trigger the future deletion all the user data including conversations, opinions, replies, reactions, upvotes/downvotes, agree/disagrees, claps, flags, reports and the corresponding proofs, with the following exceptions (these data will never be deleted):
+    - the IDs of the user-generated content (opinion/conversation/replies/flags/reports/etc) will be kept so that it will not be re-used and it will show an appropriate message when clicking on the dead link. It is also useful to allow users to search by ID and audit our platform. It is also useful to make sure the UX is smooth for other members of the community that had reacted to the deleted account data.
+    - the UUID will be kept so that it won't be reused
+    - the history of all the did:keys (public key) by the specific accounts, with the UCAN binding all the did:keys together
+    - the UCAN (signed data with device public key) corresponding to the HTTP request demanding to delete the given account identified by a UUID, counter-signed by our own server.
+    - if users had verified their passport, the ZKP from RariMe that is bound to the device key demanding the deletion of the account. In this case, the ZKP only contains the nullifier and the device key, not the sex/nationality.
     - if users had verified their passport, the UCAN where the device key signs the ZKP from RariMe
 - this is necessary to prove to third-party auditors that Agora did not censor specific accounts/data, we simply deleted the content as requested by the user.
 
 In practice, undo/delete:
 - only mark the item as deleted but do not delete it immediately, for security reasons
 
-There is an automated cron job that's running every day and which actually delete data from the database upon verifying that the flag "deleted" is up.
+There is an automated cron job that's running every day and which actually delete data from the database upon verifying that the flag "deleted" is up (for at least 15 days if it's an account deletion, or immediately for other specific deletion requests).
 
 Note on proofs (or data in the future) that were already broadcast to infrastructure we do not control (Nostr or Waku p2p network):
 - we will broadcast the proofs that the user wants to delete the account/data
@@ -515,7 +526,7 @@ The action to edit conversation/opinion/reply:
 - Database is backed-up every day on AWS S3
 - 30 days retention policy
 - Deleted data may still exist in backups, until the backups are deleted.
-- So at most, a data will stay in our database for 30 days after the deletion request
+- So at most, a data will stay in our database for 30 days after the deletion request is processed (so that means almost 31 days at most for content deletion request sent right after the cron job wakes up, and almost 46 days at most for account deletion request sent right after the cron job wakes up)
 
 ### How user data will later be processed (won't make it for the initial release in Feb but will for sure be later implemented)
 
